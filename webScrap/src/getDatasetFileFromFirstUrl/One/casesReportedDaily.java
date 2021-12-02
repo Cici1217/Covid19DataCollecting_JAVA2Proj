@@ -12,7 +12,7 @@ public class casesReportedDaily {
         try {
             reader = new BufferedReader(new FileReader(file));
             String temp;
-            temp = reader.readLine();
+            reader.readLine();
             while ((temp = reader.readLine()) != null) {
                 String[] body = temp.split(",", -1);
                 OneData oneData = new OneData();
@@ -59,7 +59,8 @@ public class casesReportedDaily {
 //            for (int i = 0; i < x; i++) {
 //                OneData oneData = hashMap.get(n).get(i);
 //                System.out.print(oneData.getNew_cases() + " ");
-//                System.out.println(oneData.getCumulative_cases());
+//                System.out.print(oneData.getCumulative_cases()+" ");
+//                System.out.println(oneData.getDate_reported());
 //            }
             reader.close();
         } catch (IOException e) {

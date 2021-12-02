@@ -47,7 +47,6 @@ public class getFiles {
     public static void downloadFile(String fileUrl, String fileLocal) throws Exception {
         URL url = new URL(fileUrl);
         HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-//        String encValue=new String(fileUrl.getBytes(StandardCharsets.ISO_8859_1));
         String encValue = "utf-8";
         InputStreamReader fileReader = new InputStreamReader(urlCon.getInputStream(), encValue);
         OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(fileLocal));

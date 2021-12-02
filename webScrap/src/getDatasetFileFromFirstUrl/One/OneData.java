@@ -60,19 +60,19 @@ public class OneData {
 
     public void setNew_cases(String new_cases) {
 
-        New_cases = Integer.valueOf(new_cases);
+        New_cases = Integer.parseInt(new_cases);
     }
 
     public void setCumulative_cases(String cumulative_cases) {
-        Cumulative_cases = Integer.valueOf(cumulative_cases);
+        Cumulative_cases = Integer.parseInt(cumulative_cases);
     }
 
     public void setNew_deaths(String new_deaths) {
-        New_deaths = Integer.valueOf(new_deaths);
+        New_deaths = Integer.parseInt(new_deaths);
     }
 
     public void setCumulative_deaths(String cumulative_deaths) {
-        Cumulative_deaths = Integer.valueOf(cumulative_deaths);
+        Cumulative_deaths = Integer.parseInt(cumulative_deaths);
     }
 
 
