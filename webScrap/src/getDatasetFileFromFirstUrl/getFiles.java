@@ -4,11 +4,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 public class getFiles {
     public static void main(String[] args) throws Exception {
@@ -40,6 +38,7 @@ public class getFiles {
         int i = 0;
         for (Element element : newElements) {
             String eachUrl = element.attr("href");
+            System.out.println(eachUrl);
             downloadFile(eachUrl, names[i++]);
         }
     }
@@ -47,10 +46,10 @@ public class getFiles {
     public static void downloadFile(String fileUrl, String fileLocal) throws Exception {
         URL url = new URL(fileUrl);
         HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-        String encValue = "utf-8";
+        String encValue = "UTF-8";
         InputStreamReader fileReader = new InputStreamReader(urlCon.getInputStream(), encValue);
-        OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(fileLocal));
-        int len = 0;
+        OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(fileLocal),encValue);
+        int len;
         while ((len = fileReader.read()) != -1) {
             out.write((char) len);
         }
