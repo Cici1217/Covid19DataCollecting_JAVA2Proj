@@ -1,3 +1,0 @@
-projectRequest：proj的要求，包括发布任务的pdf，老师给的示意gif
-webScrap：数据爬取及处理文件夹
-希望你能创建一个前端的文件夹，方便merge
