@@ -1,5 +1,6 @@
 package qianduan;
 
+import houduan.getDatasetFileFromFirstUrl.One.casesReportedDaily;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
@@ -22,21 +22,17 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Pro1Controller implements Initializable {
@@ -99,12 +95,20 @@ public class Pro1Controller implements Initializable {
 
 
         //暂时这么写样本数据(Data.data)
+
+
+
         ArrayList<Data> dataArrayList =new ArrayList<>();
-        Data data1=new Data("A",100,20,30,3);
-        Data data2=new Data("B",200,45,60,16);
-        dataArrayList.add(data1);
-        dataArrayList.add(data2);
+
+        casesReportedDaily casesReportedDaily = new casesReportedDaily();
+        for(ArrayList<Data> arrayList : casesReportedDaily.Run().values()){
+            dataArrayList.add(arrayList.get(arrayList.size()-1));
+
+        };
+
+
         Data.setData(dataArrayList);
+
 
        //暂时这么加入样本数据，不确定对不对
         ObservableList<Data> observableList=FXCollections.observableArrayList();
@@ -116,8 +120,8 @@ public class Pro1Controller implements Initializable {
         listView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Data>() {
             @Override
             public String toString(Data object) {
-                String s="\t"+object.getCountryName()+"\t\t\t"+object.getTotalCases()+"\t\t\t"+object.getNewlyCases()+
-                        "\t\t\t"+object.getTotalDeath()+"\t\t\t"+object.getNewlyDeath();
+                String s="\t"+object.getCountry()+"\t\t\t"+object.getCumulative_cases()+"\t\t\t"+object.getNew_cases()+
+                        "\t\t\t"+object.getCumulative_deaths()+"\t\t\t"+object.getNew_deaths();
                 return s;
             }
 
@@ -135,7 +139,7 @@ public class Pro1Controller implements Initializable {
                 FilteredList<Data> fin=observableList.filtered(new Predicate<Data>() {
                     @Override
                     public boolean test(Data data) {
-                        if (data.getCountryName().contains(newValue)){
+                        if (data.getCountry().contains(newValue)){
                             return true;
                         }else {
                             return false;
@@ -153,7 +157,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o1.getTotalCases()-o2.getTotalCases();
+                        return o1.getCumulative_cases()-o2.getCumulative_cases();
                     }
                 });
                 listView.setItems(fin);
@@ -166,7 +170,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o2.getTotalCases()-o1.getTotalCases();
+                        return o2.getCumulative_cases()-o1.getCumulative_cases();
                     }
                 });
                 listView.setItems(fin);
@@ -180,7 +184,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o1.getNewlyCases()-o2.getNewlyCases();
+                        return o1.getNew_cases()-o2.getNew_cases();
                     }
                 });
                 listView.setItems(fin);
@@ -193,7 +197,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o2.getNewlyCases()-o1.getNewlyCases();
+                        return o2.getNew_cases()-o1.getNew_cases();
                     }
                 });
                 listView.setItems(fin);
@@ -206,7 +210,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o1.getTotalDeath()-o2.getTotalDeath();
+                        return o1.getCumulative_deaths()-o2.getCumulative_deaths();
                     }
                 });
                 listView.setItems(fin);
@@ -219,7 +223,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o2.getTotalDeath()-o1.getTotalDeath();
+                        return o2.getCumulative_deaths()-o1.getCumulative_deaths();
                     }
                 });
                 listView.setItems(fin);
@@ -232,7 +236,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o1.getNewlyDeath()-o2.getNewlyDeath();
+                        return o1.getNew_deaths()-o2.getNew_deaths();
                     }
                 });
                 listView.setItems(fin);
@@ -245,7 +249,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o2.getNewlyDeath()-o1.getNewlyDeath();
+                        return o2.getNew_deaths()-o1.getNew_deaths();
                     }
                 });
                 listView.setItems(fin);
@@ -258,7 +262,7 @@ public class Pro1Controller implements Initializable {
                     @Override
                     public int compare(Data o1, Data o2) {
 
-                        return o1.getTotalCases()-o2.getTotalCases();
+                        return o1.getCumulative_cases()-o2.getCumulative_cases();
                     }
                 });
                 listView.setItems(fin);
@@ -353,7 +357,7 @@ public class Pro1Controller implements Initializable {
             public void changed(ObservableValue<? extends Data> observable, Data oldValue, Data newValue) {
                 temp.clear();
                 temp.addAll(listView.getSelectionModel().getSelectedItems());
-                temp.forEach(data->System.out.println(data.getCountryName()));
+                temp.forEach(data->System.out.println(data.getCountry()));
 //                System.out.println(newValue.getCountryName());
 //                temp.add(newValue);
             }
@@ -373,7 +377,7 @@ public class Pro1Controller implements Initializable {
                     case "PieChart":
                     ObservableList<PieChart.Data> dataObservableList = FXCollections.observableArrayList();
                     for (int i = 0; i < temp.size(); i++) {
-                        PieChart.Data datai = new PieChart.Data(temp.get(i).getCountryName(), temp.get(i).getTotalCases());
+                        PieChart.Data datai = new PieChart.Data(temp.get(i).getCountry(), temp.get(i).getCumulative_cases());
                         dataObservableList.add(datai);
                     }
                     PieChart pieChart = setPieChart(dataObservableList);
@@ -385,7 +389,7 @@ public class Pro1Controller implements Initializable {
                             XYChart.Series<String,Number> series=new XYChart.Series<String,Number>();
                             series.setName(Data.getName(parameters.get(i)));
                             for (int j=0;j<temp.size();j++){
-                                series.getData().add(new XYChart.Data<String,Number>(temp.get(j).getCountryName(),temp.get(j).getParameter(parameters.get(i))));
+                                series.getData().add(new XYChart.Data<String,Number>(temp.get(j).getCountry(),temp.get(j).getParameter(parameters.get(i))));
                             }
                             obl1.add(series);
 
@@ -398,7 +402,7 @@ public class Pro1Controller implements Initializable {
                         ObservableList<XYChart.Series<Number,Number>> obl2 = FXCollections.observableArrayList();
                         for (int i = 0; i < temp.size(); i++) {
                             XYChart.Series<Number,Number> series = new XYChart.Series<Number,Number>();
-                            series.setName(temp.get(i).getCountryName());
+                            series.setName(temp.get(i).getCountry());
                             series.getData().add(new XYChart.Data<Number,Number>( 0,temp.get(i).getParameter(parameters.get(0))));
 
 
@@ -430,7 +434,7 @@ public class Pro1Controller implements Initializable {
                 chartPlace.getChildren().removeAll();
                 ObservableList<PieChart.Data> dataObservableList=FXCollections.observableArrayList();
                 for (int i=0;i<temp.size();i++){
-                    PieChart.Data datai=new PieChart.Data(temp.get(1).getCountryName(),temp.get(i).getParameter(parameters.get(0)));
+                    PieChart.Data datai=new PieChart.Data(temp.get(1).getCountry(),temp.get(i).getParameter(parameters.get(0)));
                     dataObservableList.add(datai);
                 }
                 PieChart pieChart=setPieChart(dataObservableList);
@@ -453,7 +457,7 @@ public class Pro1Controller implements Initializable {
                     XYChart.Series<String,Number> series=new XYChart.Series<String,Number>();
                     series.setName(Data.getName(parameters.get(i)));
                     for (int j=0;j<temp.size();j++){
-                       series.getData().add(new XYChart.Data<String,Number>(temp.get(j).getCountryName(),temp.get(j).getParameter(parameters.get(i))));
+                       series.getData().add(new XYChart.Data<String,Number>(temp.get(j).getCountry(),temp.get(j).getParameter(parameters.get(i))));
                         //但是好像变化的时候没有跟着一起变，所以先不用
 //                        VBox v=new VBox();
 //                        v.setAlignment(Pos.CENTER);
@@ -484,7 +488,7 @@ public class Pro1Controller implements Initializable {
                 ObservableList<XYChart.Series<Number,Number>> obl = FXCollections.observableArrayList();
                 for (int i = 0; i < temp.size(); i++) {
                     XYChart.Series<Number,Number> series = new XYChart.Series<Number,Number>();
-                    series.setName(temp.get(i).getCountryName());
+                    series.setName(temp.get(i).getCountry());
                     series.getData().add(new XYChart.Data<Number,Number>( 0,temp.get(i).getParameter(parameters.get(0))));
 
 
@@ -537,10 +541,10 @@ public class Pro1Controller implements Initializable {
         updateButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                temp.get(0).setTotalCases(400);
+                temp.get(0).setCumulative_cases(400);
                 ObservableList<PieChart.Data> dataObservableList1=FXCollections.observableArrayList();
                 for (int i=0;i<temp.size();i++){
-                    pieChart.getData().get(i).setPieValue(temp.get(i).getTotalCases());
+                    pieChart.getData().get(i).setPieValue(temp.get(i).getCumulative_cases());
                 }
             }
         });
@@ -597,8 +601,8 @@ public class Pro1Controller implements Initializable {
             updateButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    temp.get(0).setTotalCases(400);
-                    temp.get(0).setTotalDeath(80);
+                    temp.get(0).setCumulative_cases(400);
+                    temp.get(0).setCumulative_deaths(80);
                     ObservableList<XYChart.Series<String, Number>> dataObservableList1 = FXCollections.observableArrayList();
                     for (int i = 0; i < parameters.size(); i++) {
                         for (int j = 0; j < temp.size(); j++) {

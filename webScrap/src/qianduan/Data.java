@@ -6,112 +6,128 @@ import javafx.beans.property.SimpleStringProperty;
 import java.util.ArrayList;
 
 public class Data {
-    private SimpleStringProperty CountryName =new SimpleStringProperty();
-    private SimpleIntegerProperty TotalCases=new SimpleIntegerProperty();
-    private SimpleIntegerProperty NewlyCases=new SimpleIntegerProperty();
-    private SimpleIntegerProperty TotalDeath=new SimpleIntegerProperty();
-    private SimpleIntegerProperty NewlyDeath=new SimpleIntegerProperty();
+    private SimpleStringProperty Date_reported = new SimpleStringProperty();
+    private SimpleStringProperty Country_code = new SimpleStringProperty();
+    private SimpleStringProperty Country = new SimpleStringProperty();
+    private SimpleStringProperty WHO_region = new SimpleStringProperty();
+    private SimpleIntegerProperty Cumulative_cases = new SimpleIntegerProperty();
+    private SimpleIntegerProperty New_cases = new SimpleIntegerProperty();
+    private SimpleIntegerProperty Cumulative_deaths = new SimpleIntegerProperty();
+    private SimpleIntegerProperty New_deaths = new SimpleIntegerProperty();
     private static ArrayList<Data> data;
 
 
     public static ArrayList<Data> getData() {
         return data;
     }
+
     public static void setData(ArrayList<Data> data) {
         Data.data = data;
     }
 
-
-    public Data(String CountryName,Integer TotalCases,Integer NewlyCases,
-                Integer TotalDeath,Integer NewlyDeath){
-        this.CountryName.set(CountryName);
-        this.TotalCases.set(TotalCases);
-        this.NewlyCases.set(NewlyCases);
-        this.TotalDeath.set(TotalDeath);
-        this.NewlyDeath.set(NewlyDeath);
+    public Data(String Date_reported, String Country_code, String Country, String WHO_region, String Cumulative_cases, String New_cases,
+                String Cumulative_deaths, String New_deaths) {
+        this.Date_reported.set(Date_reported);
+        this.Country_code.set(Country_code);
+        this.Country.set(Country);
+        this.WHO_region.set(WHO_region);
+        this.Cumulative_cases.set(Integer.parseInt(Cumulative_cases));
+        this.New_cases.set(Integer.parseInt(New_cases));
+        this.Cumulative_deaths.set(Integer.parseInt(Cumulative_deaths));
+        this.New_deaths.set(Integer.parseInt(New_deaths));
     }
-    public int getParameter(int i){
-        switch (i){
-            case 0:return this.getTotalCases();
-            case 1:return this.getNewlyCases();
-            case 2:return this.getTotalDeath();
-            case 3:return this.getNewlyDeath();
-            default:return -1;
+
+    public int getParameter(int i) {
+        switch (i) {
+            case 0:
+                return this.getCumulative_cases();
+            case 1:
+                return this.getNew_cases();
+            case 2:
+                return this.getCumulative_deaths();
+            case 3:
+                return this.getNew_deaths();
+            default:
+                return -1;
 
         }
     }
-    public static String getName(int i){
-        switch (i){
-            case 0:return "TotalCases";
-            case 1:return "NewlyCases";
-            case 2:return "TotalDeath";
-            case 3:return "NewlyDeath";
-            default:return "";
+
+    public static String getName(int i) {
+        switch (i) {
+            case 0:
+                return "TotalCases";
+            case 1:
+                return "NewlyCases";
+            case 2:
+                return "TotalDeath";
+            case 3:
+                return "NewlyDeath";
+            default:
+                return "";
 
         }
     }
 
-    public String getCountryName() {
-        return CountryName.get();
+    public String getCountry() {
+        return Country.get();
     }
 
-    public SimpleStringProperty countryNameProperty() {
-        return CountryName;
+    public SimpleStringProperty countryProperty() {
+        return Country;
     }
 
-    public void setCountryName(String countryName) {
-        this.CountryName.set(countryName);
+    public void setCountry(String country) {
+        this.Country.set(country);
     }
 
-    public int getTotalCases() {
-        return TotalCases.get();
+    public int getCumulative_cases() {
+        return Cumulative_cases.get();
     }
 
-    public SimpleIntegerProperty totalCasesProperty() {
-        return TotalCases;
+    public SimpleIntegerProperty cumulative_casesProperty() {
+        return Cumulative_cases;
     }
 
-    public void setTotalCases(int totalCases) {
-        this.TotalCases.set(totalCases);
+    public void setCumulative_cases(int cumulative_cases) {
+        this.Cumulative_cases.set(cumulative_cases);
     }
 
-    public int getNewlyCases() {
-        return NewlyCases.get();
+    public int getNew_cases() {
+        return New_cases.get();
     }
 
-    public SimpleIntegerProperty newlyCasesProperty() {
-        return NewlyCases;
+    public SimpleIntegerProperty new_casesProperty() {
+        return New_cases;
     }
 
-    public void setNewlyCases(int newlyCases) {
-        this.NewlyCases.set(newlyCases);
+    public void setNew_cases(int new_cases) {
+        this.New_cases.set(new_cases);
     }
 
-    public int getTotalDeath() {
-        return TotalDeath.get();
+    public int getCumulative_deaths() {
+        return Cumulative_deaths.get();
     }
 
-    public SimpleIntegerProperty totalDeathProperty() {
-        return TotalDeath;
+    public SimpleIntegerProperty cumulative_deathsProperty() {
+        return Cumulative_deaths;
     }
 
-    public void setTotalDeath(int totalDeath) {
-        this.TotalDeath.set(totalDeath);
+    public void setCumulative_deaths(int cumulative_deaths) {
+        this.Cumulative_deaths.set(cumulative_deaths);
     }
 
-    public int getNewlyDeath() {
-        return NewlyDeath.get();
+    public int getNew_deaths() {
+        return New_deaths.get();
     }
 
-    public SimpleIntegerProperty newlyDeathProperty() {
-        return NewlyDeath;
+    public SimpleIntegerProperty new_deathsProperty() {
+        return New_deaths;
     }
 
-    public void setNewlyDeath(int newlyDeath) {
-        this.NewlyDeath.set(newlyDeath);
+    public void setNew_deaths(int new_deaths) {
+        this.New_deaths.set(new_deaths);
     }
-
-
 
 
 }
