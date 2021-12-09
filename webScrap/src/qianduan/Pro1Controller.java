@@ -1,5 +1,6 @@
 package qianduan;
 
+import houduan.getDatasetFileFromFirstUrl.One.OneData;
 import houduan.getDatasetFileFromFirstUrl.One.casesReportedDaily;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -44,7 +45,7 @@ public class Pro1Controller implements Initializable {
     MenuBar menuBar;
 
     @FXML
-    ListView<Data> listView;
+    ListView<OneData> listView;
 
     @FXML
     Label label;
@@ -82,7 +83,7 @@ public class Pro1Controller implements Initializable {
     String current="PieChart";
     String PieChart="PieChart",BarChart="BarChart",LineChart="LineChart";
 
-    static ObservableList<Data> temp = FXCollections.observableArrayList();
+    static ObservableList<OneData> temp = FXCollections.observableArrayList();
     static  ArrayList<Integer> parameters=new ArrayList<>();
 
     @Override
@@ -98,35 +99,34 @@ public class Pro1Controller implements Initializable {
 
 
 
-        ArrayList<Data> dataArrayList =new ArrayList<>();
+        ArrayList<OneData> dataArrayList =new ArrayList<>();
 
         casesReportedDaily casesReportedDaily = new casesReportedDaily();
-        for(ArrayList<Data> arrayList : casesReportedDaily.Run().values()){
+        for(ArrayList<OneData> arrayList : casesReportedDaily.Run().values()){
             dataArrayList.add(arrayList.get(arrayList.size()-1));
-
         };
 
 
-        Data.setData(dataArrayList);
+        OneData.setData(dataArrayList);
 
 
        //暂时这么加入样本数据，不确定对不对
-        ObservableList<Data> observableList=FXCollections.observableArrayList();
-        observableList.addAll(Data.getData());
+        ObservableList<OneData> observableList=FXCollections.observableArrayList();
+        observableList.addAll(OneData.getData());
 
 
 
 
-        listView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Data>() {
+        listView.setCellFactory(TextFieldListCell.forListView(new StringConverter<OneData>() {
             @Override
-            public String toString(Data object) {
+            public String toString(OneData object) {
                 String s="\t"+object.getCountry()+"\t\t\t"+object.getCumulative_cases()+"\t\t\t"+object.getNew_cases()+
                         "\t\t\t"+object.getCumulative_deaths()+"\t\t\t"+object.getNew_deaths();
                 return s;
             }
 
             @Override
-            public Data fromString(String string) {
+            public OneData fromString(String string) {
                 return null;
             }
         }));
@@ -136,9 +136,9 @@ public class Pro1Controller implements Initializable {
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                FilteredList<Data> fin=observableList.filtered(new Predicate<Data>() {
+                FilteredList<OneData> fin=observableList.filtered(new Predicate<OneData>() {
                     @Override
-                    public boolean test(Data data) {
+                    public boolean test(OneData data) {
                         if (data.getCountry().contains(newValue)){
                             return true;
                         }else {
@@ -153,9 +153,9 @@ public class Pro1Controller implements Initializable {
         on1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o1.getCumulative_cases()-o2.getCumulative_cases();
                     }
@@ -166,9 +166,9 @@ public class Pro1Controller implements Initializable {
         down1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o2.getCumulative_cases()-o1.getCumulative_cases();
                     }
@@ -180,9 +180,9 @@ public class Pro1Controller implements Initializable {
         on2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o1.getNew_cases()-o2.getNew_cases();
                     }
@@ -193,9 +193,9 @@ public class Pro1Controller implements Initializable {
         down2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o2.getNew_cases()-o1.getNew_cases();
                     }
@@ -206,9 +206,9 @@ public class Pro1Controller implements Initializable {
         on3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o1.getCumulative_deaths()-o2.getCumulative_deaths();
                     }
@@ -219,9 +219,9 @@ public class Pro1Controller implements Initializable {
         down3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o2.getCumulative_deaths()-o1.getCumulative_deaths();
                     }
@@ -232,9 +232,9 @@ public class Pro1Controller implements Initializable {
         on4.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o1.getNew_deaths()-o2.getNew_deaths();
                     }
@@ -245,9 +245,9 @@ public class Pro1Controller implements Initializable {
         down4.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o2.getNew_deaths()-o1.getNew_deaths();
                     }
@@ -258,9 +258,9 @@ public class Pro1Controller implements Initializable {
         on1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SortedList<Data> fin=observableList.sorted(new Comparator<Data>() {
+                SortedList<OneData> fin=observableList.sorted(new Comparator<OneData>() {
                     @Override
-                    public int compare(Data o1, Data o2) {
+                    public int compare(OneData o1, OneData o2) {
 
                         return o1.getCumulative_cases()-o2.getCumulative_cases();
                     }
@@ -352,9 +352,9 @@ public class Pro1Controller implements Initializable {
         listView.setItems(observableList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Data>() {
+        listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<OneData>() {
             @Override
-            public void changed(ObservableValue<? extends Data> observable, Data oldValue, Data newValue) {
+            public void changed(ObservableValue<? extends OneData> observable, OneData oldValue, OneData newValue) {
                 temp.clear();
                 temp.addAll(listView.getSelectionModel().getSelectedItems());
                 temp.forEach(data->System.out.println(data.getCountry()));
@@ -387,7 +387,7 @@ public class Pro1Controller implements Initializable {
                         ObservableList<XYChart.Series<String,Number>> obl1=FXCollections.observableArrayList();
                         for (int i=0;i<parameters.size();i++){
                             XYChart.Series<String,Number> series=new XYChart.Series<String,Number>();
-                            series.setName(Data.getName(parameters.get(i)));
+                            series.setName(OneData.getName(parameters.get(i)));
                             for (int j=0;j<temp.size();j++){
                                 series.getData().add(new XYChart.Data<String,Number>(temp.get(j).getCountry(),temp.get(j).getParameter(parameters.get(i))));
                             }
@@ -455,7 +455,7 @@ public class Pro1Controller implements Initializable {
                 ObservableList<XYChart.Series<String,Number>> obl=FXCollections.observableArrayList();
                 for (int i=0;i<parameters.size();i++){
                     XYChart.Series<String,Number> series=new XYChart.Series<String,Number>();
-                    series.setName(Data.getName(parameters.get(i)));
+                    series.setName(OneData.getName(parameters.get(i)));
                     for (int j=0;j<temp.size();j++){
                        series.getData().add(new XYChart.Data<String,Number>(temp.get(j).getCountry(),temp.get(j).getParameter(parameters.get(i))));
                         //但是好像变化的时候没有跟着一起变，所以先不用

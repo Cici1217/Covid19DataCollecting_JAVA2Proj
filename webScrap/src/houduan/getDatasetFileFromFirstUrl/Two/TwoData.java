@@ -33,30 +33,181 @@ public class TwoData {
 
     public TwoData(String Name,
                    String WHO_region,
-                   int cumulativeCases,
-                   double cumulativeCasesPer100000,
-                   int newlyReportedCasesIn7Days,
-                   double newlyReportedCasesIn7DaysPer100000,
-                   int newlyReportedCasesIn24Hours,
-                   int cumulativeDeaths,
-                   double cumulativeDeathsPer100000,
-                   int newlyReportedDeathsIn7Days,
-                   double newlyReportedDeathsIn7DaysPer100000,
-                   int newlyReportedDeathsIn24Hours) {
+                   String cumulativeCases,
+                   String cumulativeCasesPer100000,
+                   String newlyReportedCasesIn7Days,
+                   String newlyReportedCasesIn7DaysPer100000,
+                   String newlyReportedCasesIn24Hours,
+                   String cumulativeDeaths,
+                   String cumulativeDeathsPer100000,
+                   String newlyReportedDeathsIn7Days,
+                   String newlyReportedDeathsIn7DaysPer100000,
+                   String newlyReportedDeathsIn24Hours) {
         this.Name.set(Name);
         this.WHO_region.set(WHO_region);
-        this.cumulativeCases.set(cumulativeCases);
-        this.cumulativeCasesPer100000.set(cumulativeCases);
-        this.newlyReportedCasesIn7Days.set(newlyReportedCasesIn7Days);
-        this.newlyReportedCasesIn7DaysPer100000.set(newlyReportedCasesIn7DaysPer100000);
-        this.newlyReportedCasesIn24Hours.set(newlyReportedCasesIn24Hours);
-        this.cumulativeDeaths.set(cumulativeDeaths);
-        this.cumulativeDeathsPer100000.set(cumulativeDeathsPer100000);
-        this.newlyReportedDeathsIn7Days.set(newlyReportedDeathsIn7Days);
-        this.newlyReportedDeathsIn7DaysPer100000.set(newlyReportedDeathsIn7DaysPer100000);
-        this.newlyReportedDeathsIn24Hours.set(newlyReportedDeathsIn24Hours);
+        this.cumulativeCases.set(Integer.parseInt(cumulativeCases));
+        this.cumulativeCasesPer100000.set(Double.parseDouble(cumulativeCases));
+        this.newlyReportedCasesIn7Days.set(Integer.parseInt(newlyReportedCasesIn7Days));
+        this.newlyReportedCasesIn7DaysPer100000.set(Double.parseDouble(newlyReportedCasesIn7DaysPer100000));
+        this.newlyReportedCasesIn24Hours.set(Integer.parseInt(newlyReportedCasesIn24Hours));
+        this.cumulativeDeaths.set(Integer.parseInt(cumulativeDeaths));
+        this.cumulativeDeathsPer100000.set(Double.parseDouble(cumulativeDeathsPer100000));
+        this.newlyReportedDeathsIn7Days.set(Integer.parseInt(newlyReportedDeathsIn7Days));
+        this.newlyReportedDeathsIn7DaysPer100000.set(Double.parseDouble(newlyReportedDeathsIn7DaysPer100000));
+        this.newlyReportedDeathsIn24Hours.set(Integer.parseInt(newlyReportedDeathsIn24Hours));
     }
-    //
+
+    public int getParameter(int i) {
+        switch (i) {
+            case 0:
+                return this.getCumulativeCases();
+            case 1:
+                return (int) this.getCumulativeCasesPer100000();
+            case 2:
+                return this.getNewlyReportedCasesIn7Days();
+            case 3:
+                return this.getNewlyReportedCasesIn24Hours();
+            case 4:
+                return (int) this.getNewlyReportedCasesIn7DaysPer100000();
+            case 5:
+                return this.getCumulativeDeaths();
+            case 6:
+                return (int) this.getCumulativeDeathsPer100000();
+            case 7:
+                return this.getNewlyReportedDeathsIn7Days();
+            case 8:
+                return this.getNewlyReportedDeathsIn24Hours();
+            case 9:
+                return (int) this.getNewlyReportedDeathsIn7DaysPer100000();
+            default:
+                return -1;
+
+        }
+    }
+
+    public static String getName(int i) {
+        switch (i) {
+            case 0:
+                return "CumulativeCases";
+            case 1:
+                return "CumulativeCasesPer100000";
+            case 2:
+                return "NewlyReportedCasesIn7Days";
+            case 3:
+                return "NewlyReportedCasesIn24Hours";
+            case 4:
+                return "NewlyReportedCasesIn7DaysPer100000";
+            case 5:
+                return "CumulativeDeaths";
+            case 6:
+                return "CumulativeDeathsPer100000";
+            case 7:
+                return "NewlyReportedDeathsIn7Days";
+            case 8:
+                return "NewlyReportedDeathsIn24Hours";
+            case 9:
+                return "NewlyReportedDeathsIn7DaysPer100000";
+            default:
+                return "";
+
+        }
+    }
+
+    public String getName() {
+        return Name.get();
+    }
+
+    public SimpleStringProperty nameProperty() {
+        return Name;
+    }
+
+    public String getWHO_region() {
+        return WHO_region.get();
+    }
+
+    public SimpleStringProperty WHO_regionProperty() {
+        return WHO_region;
+    }
+
+    public int getCumulativeCases() {
+        return cumulativeCases.get();
+    }
+
+    public SimpleIntegerProperty cumulativeCasesProperty() {
+        return cumulativeCases;
+    }
+
+    public double getCumulativeCasesPer100000() {
+        return cumulativeCasesPer100000.get();
+    }
+
+    public SimpleDoubleProperty cumulativeCasesPer100000Property() {
+        return cumulativeCasesPer100000;
+    }
+
+    public int getNewlyReportedCasesIn7Days() {
+        return newlyReportedCasesIn7Days.get();
+    }
+
+    public SimpleIntegerProperty newlyReportedCasesIn7DaysProperty() {
+        return newlyReportedCasesIn7Days;
+    }
+
+    public double getNewlyReportedCasesIn7DaysPer100000() {
+        return newlyReportedCasesIn7DaysPer100000.get();
+    }
+
+    public SimpleDoubleProperty newlyReportedCasesIn7DaysPer100000Property() {
+        return newlyReportedCasesIn7DaysPer100000;
+    }
+
+    public int getNewlyReportedCasesIn24Hours() {
+        return newlyReportedCasesIn24Hours.get();
+    }
+
+    public SimpleIntegerProperty newlyReportedCasesIn24HoursProperty() {
+        return newlyReportedCasesIn24Hours;
+    }
+
+    public int getCumulativeDeaths() {
+        return cumulativeDeaths.get();
+    }
+
+    public SimpleIntegerProperty cumulativeDeathsProperty() {
+        return cumulativeDeaths;
+    }
+
+    public double getCumulativeDeathsPer100000() {
+        return cumulativeDeathsPer100000.get();
+    }
+
+    public SimpleDoubleProperty cumulativeDeathsPer100000Property() {
+        return cumulativeDeathsPer100000;
+    }
+
+    public int getNewlyReportedDeathsIn7Days() {
+        return newlyReportedDeathsIn7Days.get();
+    }
+
+    public SimpleIntegerProperty newlyReportedDeathsIn7DaysProperty() {
+        return newlyReportedDeathsIn7Days;
+    }
+
+    public double getNewlyReportedDeathsIn7DaysPer100000() {
+        return newlyReportedDeathsIn7DaysPer100000.get();
+    }
+
+    public SimpleDoubleProperty newlyReportedDeathsIn7DaysPer100000Property() {
+        return newlyReportedDeathsIn7DaysPer100000;
+    }
+
+    public int getNewlyReportedDeathsIn24Hours() {
+        return newlyReportedDeathsIn24Hours.get();
+    }
+
+    public SimpleIntegerProperty newlyReportedDeathsIn24HoursProperty() {
+        return newlyReportedDeathsIn24Hours;
+    }
 //    public void setName(String name) {
 //        Name = name;
 //    }
