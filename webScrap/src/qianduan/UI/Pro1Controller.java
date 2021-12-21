@@ -2,6 +2,7 @@ package qianduan.UI;
 
 import houduan.One.OneData;
 import houduan.One.casesReportedDaily;
+import houduan.Two.TwoData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,6 +35,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -48,6 +50,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Predicate;
@@ -88,7 +91,6 @@ public class Pro1Controller implements Initializable {
     @FXML
     CustomMenuItem source1, source2;
 
-
     @FXML
     Menu sort1, sort2, sort3, sort4;
 
@@ -117,7 +119,7 @@ public class Pro1Controller implements Initializable {
     static boolean isOne;//判断选择的第几个数据源
     static MenuButton start = new MenuButton("2020-01-03");
     static MenuButton end = new MenuButton("2020-01-03");
-
+    static String dayNow;
 
     static ArrayList<String> b = new ArrayList<>();
     static ArrayList<String> bString = new ArrayList<>();
@@ -193,9 +195,12 @@ public class Pro1Controller implements Initializable {
         /*
         添加label
          */
-        String s = casesReportedDaily1.RunDate().get("China").get(casesReportedDaily1.RunDate().get("China").size() - 1);
-        Label label = new Label("   CountryName    TotalCases     NewlyCases     TotalDeath     NewlyDeath    NewlyDate: " + s);
+        dayNow = casesReportedDaily1.RunDate().get("China").get(casesReportedDaily1.RunDate().get("China").size() - 1);
+        Label label = new Label(
+                String.format("%-39s%-32s%-32s%-32s%-32s%s","CountryName","TotalCases","NewlyCases","TotalDeath","NewlyDeath", "NewlyDate:") + dayNow);
+
         labelPlace.getChildren().add(label);
+
 
 //        Label label2 = new Label();
 
@@ -206,6 +211,18 @@ public class Pro1Controller implements Initializable {
         source1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                labelPlace.getChildren().remove(1);
+                dayNow = casesReportedDaily1.RunDate().get("China").get(casesReportedDaily1.RunDate().get("China").size() - 1);
+                Label label = new Label(        String.format("%-39s%-32s%-32s%-32s%-32s%s","CountryName","TotalCases","NewlyCases","TotalDeath","NewlyDeath", "NewlyDate:") + dayNow);
+                labelPlace.getChildren().add(label);
+//                ArrayList<OneData> dataArrayList1 = new ArrayList<>();
+//                casesReportedDaily casesReportedDaily1 = new casesReportedDaily();
+//                for (ArrayList<OneData> arrayList : casesReportedDaily1.Run().values()) {
+//                    dataArrayList1.add(arrayList.get(arrayList.size() - 1));
+//                }
+//                OneData.setData(dataArrayList1);
+//                ObservableList<OneData> observableList1 = FXCollections.observableArrayList();
+//                observableList1.addAll(OneData.getData());
                 observableList = observableList1;
                 listView.setItems(observableList);
                 isOne = true;
@@ -219,6 +236,15 @@ public class Pro1Controller implements Initializable {
 
                 an2.setPrefHeight(650);
                 an2.setPrefWidth(1200);
+                an2.setStyle("-fx-background-image: url(" + "qianduan/pic/bg2.png" + "); " +
+                        "-fx-background-position: center center; " +
+                        "-fx-background-repeat: stretch;" +
+                        "-fx-background-color:  transparent;");
+                an.setStyle("-fx-background-image: url(" + "qianduan/pic/bg2.png" + "); " +
+                        "-fx-background-position: center center; " +
+                        "-fx-background-repeat: stretch;" +
+                        "-fx-background-color:  transparent;");
+
                 paneNode = FXCollections.observableArrayList(an.getChildren());
 
                 an.getChildren().clear();
@@ -241,9 +267,8 @@ public class Pro1Controller implements Initializable {
         });
 
 
-        HashMap<String, int[]> map = houduan.Two.getChinaDataFromFile.getDataInChina();
+        HashMap<String, TwoData> map = houduan.Two.getChinaDataFromFile.getDataInChina();
 //        Map<String, int[]> map = new HashMap<>();
-        int[] a1 = new int[4];
 
 
 
@@ -254,7 +279,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label11 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "广东", map.get("广东")[0], map.get("广东")[1], map.get("广东")[2], map.get("广东")[3]));
+                "广东", map.get("广东").getNewlyCase(), map.get("广东").getTotalCase(), map.get("广东").getTotalCured(), map.get("广东").getTotalDeath()));
 
         label11.setFont(new Font(18));
         gd.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -282,7 +307,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label12 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "香港", map.get("香港")[0], map.get("香港")[1], map.get("香港")[2], map.get("香港")[3]));
+                "香港", map.get("香港").getNewlyCase(), map.get("香港").getTotalCase(), map.get("香港").getTotalCured(), map.get("香港").getTotalDeath()));
 
         label12.setFont(new Font(18));
         hk.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -309,7 +334,7 @@ public class Pro1Controller implements Initializable {
         });
 
         Label label13 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "安徽", map.get("安徽")[0], map.get("安徽")[1], map.get("安徽")[2], map.get("安徽")[3]));
+                "安徽", map.get("安徽").getNewlyCase(), map.get("安徽").getTotalCase(), map.get("安徽").getTotalCured(), map.get("安徽").getTotalDeath()));
 
         label13.setFont(new Font(18));
         ah.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -336,7 +361,7 @@ public class Pro1Controller implements Initializable {
         });
 
         Label label14 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "北京", map.get("北京")[0], map.get("北京")[1], map.get("北京")[2], map.get("北京")[3]));
+                "北京", map.get("北京").getNewlyCase(), map.get("北京").getTotalCase(), map.get("北京").getTotalCured(), map.get("北京").getTotalDeath()));
 
         label14.setFont(new Font(18));
         bj.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -364,7 +389,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label15 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "重庆", map.get("重庆")[0], map.get("重庆")[1], map.get("重庆")[2], map.get("重庆")[3]));
+                "重庆", map.get("重庆").getNewlyCase(), map.get("重庆").getTotalCase(), map.get("重庆").getTotalCured(), map.get("重庆").getTotalDeath()));
 
         label15.setFont(new Font(18));
         cq.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -408,7 +433,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label16 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "福建", map.get("福建")[0], map.get("福建")[1], map.get("福建")[2], map.get("福建")[3]));
+                "福建", map.get("福建").getNewlyCase(), map.get("福建").getTotalCase(), map.get("福建").getTotalCured(), map.get("福建").getTotalDeath()));
 
         label16.setFont(new Font(18));
         fj.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -437,7 +462,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label17 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "甘肃", map.get("甘肃")[0], map.get("甘肃")[1], map.get("甘肃")[2], map.get("甘肃")[3]));
+                "甘肃", map.get("甘肃").getNewlyCase(), map.get("甘肃").getTotalCase(), map.get("甘肃").getTotalCured(), map.get("甘肃").getTotalDeath()));
 
         label17.setFont(new Font(18));
         gs.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -465,7 +490,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label18 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "广西", map.get("广西")[0], map.get("广西")[1], map.get("广西")[2], map.get("广西")[3]));
+                "广西", map.get("广西").getNewlyCase(), map.get("广西").getTotalCase(), map.get("广西").getTotalCured(), map.get("广西").getTotalDeath()));
 
         label18.setFont(new Font(18));
         gx.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -494,7 +519,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label19 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "贵州", map.get("贵州")[0], map.get("贵州")[1], map.get("贵州")[2], map.get("贵州")[3]));
+                "贵州", map.get("贵州").getNewlyCase(), map.get("贵州").getTotalCase(), map.get("贵州").getTotalCured(), map.get("贵州").getTotalDeath()));
 
         label19.setFont(new Font(18));
         gz.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -523,7 +548,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label21 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "河北", map.get("河北")[0], map.get("河北")[1], map.get("河北")[2], map.get("河北")[3]));
+                "河北", map.get("河北").getNewlyCase(), map.get("河北").getTotalCase(), map.get("河北").getTotalCured(), map.get("河北").getTotalDeath()));
 
         label21.setFont(new Font(18));
         hb.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -552,7 +577,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label22 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "湖北", map.get("湖北")[0], map.get("湖北")[1], map.get("湖北")[2], map.get("湖北")[3]));
+                "湖北", map.get("湖北").getNewlyCase(), map.get("湖北").getTotalCase(), map.get("湖北").getTotalCured(), map.get("湖北").getTotalDeath()));
 
         label22.setFont(new Font(18));
         hb2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -581,7 +606,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label23 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "黑龙江", map.get("黑龙江")[0], map.get("黑龙江")[1], map.get("黑龙江")[2], map.get("黑龙江")[3]));
+                "黑龙江", map.get("黑龙江").getNewlyCase(), map.get("黑龙江").getTotalCase(), map.get("黑龙江").getTotalCured(), map.get("黑龙江").getTotalDeath()));
 
         label23.setFont(new Font(18));
         hlj.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -610,7 +635,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label24 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "河南", map.get("河南")[0], map.get("河南")[1], map.get("河南")[2], map.get("河南")[3]));
+                "河南", map.get("河南").getNewlyCase(), map.get("河南").getTotalCase(), map.get("河南").getTotalCured(), map.get("河南").getTotalDeath()));
 
         label24.setFont(new Font(18));
         hn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -639,7 +664,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label25 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "湖南", map.get("湖南")[0], map.get("湖南")[1], map.get("湖南")[2], map.get("湖南")[3]));
+                "湖南", map.get("湖南").getNewlyCase(), map.get("湖南").getTotalCase(), map.get("湖南").getTotalCured(), map.get("湖南").getTotalDeath()));
 
         label25.setFont(new Font(18));
         hn2.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -668,7 +693,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label26 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "海南", map.get("海南")[0], map.get("海南")[1], map.get("海南")[2], map.get("海南")[3]));
+                "海南", map.get("海南").getNewlyCase(), map.get("海南").getTotalCase(), map.get("海南").getTotalCured(), map.get("海南").getTotalDeath()));
 
         label26.setFont(new Font(18));
         hn3.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -697,7 +722,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label27 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "吉林", map.get("吉林")[0], map.get("吉林")[1], map.get("吉林")[2], map.get("吉林")[3]));
+                "吉林", map.get("吉林").getNewlyCase(), map.get("吉林").getTotalCase(), map.get("吉林").getTotalCured(), map.get("吉林").getTotalDeath()));
 
         label27.setFont(new Font(18));
         jl.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -726,7 +751,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label28 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "江苏", map.get("江苏")[0], map.get("江苏")[1], map.get("江苏")[2], map.get("江苏")[3]));
+                "江苏", map.get("江苏").getNewlyCase(), map.get("江苏").getTotalCase(), map.get("江苏").getTotalCured(), map.get("江苏").getTotalDeath()));
 
         label28.setFont(new Font(18));
         js.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -755,7 +780,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label29 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "江西", map.get("江西")[0], map.get("江西")[1], map.get("江西")[2], map.get("江西")[3]));
+                "江西", map.get("江西").getNewlyCase(), map.get("江西").getTotalCase(), map.get("江西").getTotalCured(), map.get("江西").getTotalDeath()));
 
         label29.setFont(new Font(18));
         jx.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -784,7 +809,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label31 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "辽宁", map.get("辽宁")[0], map.get("辽宁")[1], map.get("辽宁")[2], map.get("辽宁")[3]));
+                "辽宁", map.get("辽宁").getNewlyCase(), map.get("辽宁").getTotalCase(), map.get("辽宁").getTotalCured(), map.get("辽宁").getTotalDeath()));
 
         label31.setFont(new Font(18));
         ln.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -813,7 +838,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label32 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "内蒙古", map.get("内蒙古")[0], map.get("内蒙古")[1], map.get("内蒙古")[2], map.get("内蒙古")[3]));
+                "内蒙古", map.get("内蒙古").getNewlyCase(), map.get("内蒙古").getTotalCase(), map.get("内蒙古").getTotalCured(), map.get("内蒙古").getTotalDeath()));
 
         label32.setFont(new Font(18));
         nmg.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -842,7 +867,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label33 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "宁夏", map.get("宁夏")[0], map.get("宁夏")[1], map.get("宁夏")[2], map.get("宁夏")[3]));
+                "宁夏", map.get("宁夏").getNewlyCase(), map.get("宁夏").getTotalCase(), map.get("宁夏").getTotalCured(), map.get("宁夏").getTotalDeath()));
 
         label33.setFont(new Font(18));
         nx.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -871,7 +896,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label34 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "青海", map.get("青海")[0], map.get("青海")[1], map.get("青海")[2], map.get("青海")[3]));
+                "青海", map.get("青海").getNewlyCase(), map.get("青海").getTotalCase(), map.get("青海").getTotalCured(), map.get("青海").getTotalDeath()));
 
         label34.setFont(new Font(18));
         qh.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -900,7 +925,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label35 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "四川", map.get("四川")[0], map.get("四川")[1], map.get("四川")[2], map.get("四川")[3]));
+                "四川", map.get("四川").getNewlyCase(), map.get("四川").getTotalCase(), map.get("四川").getTotalCured(), map.get("四川").getTotalDeath()));
 
         label35.setFont(new Font(18));
         sc.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -929,7 +954,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label36 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "上海", map.get("上海")[0], map.get("上海")[1], map.get("上海")[2], map.get("上海")[3]));
+                "上海", map.get("上海").getNewlyCase(), map.get("上海").getTotalCase(), map.get("上海").getTotalCured(), map.get("上海").getTotalDeath()));
 
         label36.setFont(new Font(18));
         sh.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -958,7 +983,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label37 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "陕西", map.get("陕西")[0], map.get("陕西")[1], map.get("陕西")[2], map.get("陕西")[3]));
+                "陕西", map.get("陕西").getNewlyCase(), map.get("陕西").getTotalCase(), map.get("陕西").getTotalCured(), map.get("陕西").getTotalDeath()));
 
         label37.setFont(new Font(18));
         sx.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -987,7 +1012,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label38 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "山西", map.get("山西")[0], map.get("山西")[1], map.get("山西")[2], map.get("山西")[3]));
+                "山西", map.get("山西").getNewlyCase(), map.get("山西").getTotalCase(), map.get("山西").getTotalCured(), map.get("山西").getTotalDeath()));
 
         label38.setFont(new Font(18));
         sx1.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1016,7 +1041,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label39 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "天津", map.get("天津")[0], map.get("天津")[1], map.get("天津")[2], map.get("天津")[3]));
+                "天津", map.get("天津").getNewlyCase(), map.get("天津").getTotalCase(), map.get("天津").getTotalCured(), map.get("天津").getTotalDeath()));
 
         label39.setFont(new Font(18));
         tj.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1045,7 +1070,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label41 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "台湾", map.get("台湾")[0], map.get("台湾")[1], map.get("台湾")[2], map.get("台湾")[3]));
+                "台湾", map.get("台湾").getNewlyCase(), map.get("台湾").getTotalCase(), map.get("台湾").getTotalCured(), map.get("台湾").getTotalDeath()));
 
         label41.setFont(new Font(18));
         tw.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1074,7 +1099,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label42 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "新疆", map.get("新疆")[0], map.get("新疆")[1], map.get("新疆")[2], map.get("新疆")[3]));
+                "新疆", map.get("新疆").getNewlyCase(), map.get("新疆").getTotalCase(), map.get("新疆").getTotalCured(), map.get("新疆").getTotalDeath()));
 
         label42.setFont(new Font(18));
         xj.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1103,7 +1128,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label43 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "西藏", map.get("西藏")[0], map.get("西藏")[1], map.get("西藏")[2], map.get("西藏")[3]));
+                "西藏", map.get("西藏").getNewlyCase(), map.get("西藏").getTotalCase(), map.get("西藏").getTotalCured(), map.get("西藏").getTotalDeath()));
 
         label43.setFont(new Font(18));
         xz.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1132,7 +1157,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label44 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "云南", map.get("云南")[0], map.get("云南")[1], map.get("云南")[2], map.get("云南")[3]));
+                "云南", map.get("云南").getNewlyCase(), map.get("云南").getTotalCase(), map.get("云南").getTotalCured(), map.get("云南").getTotalDeath()));
 
         label44.setFont(new Font(18));
         yn.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1161,7 +1186,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label45 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "浙江", map.get("浙江")[0], map.get("浙江")[1], map.get("浙江")[2], map.get("浙江")[3]));
+                "浙江", map.get("浙江").getNewlyCase(), map.get("浙江").getTotalCase(), map.get("浙江").getTotalCured(), map.get("浙江").getTotalDeath()));
 
         label45.setFont(new Font(18));
         zj.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1190,7 +1215,7 @@ public class Pro1Controller implements Initializable {
 
 
         Label label46 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "澳门", map.get("澳门")[0], map.get("澳门")[1], map.get("澳门")[2], map.get("澳门")[3]));
+                "澳门", map.get("澳门").getNewlyCase(), map.get("澳门").getTotalCase(), map.get("澳门").getTotalCured(), map.get("澳门").getTotalDeath()));
 
         label46.setFont(new Font(18));
         am.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1218,7 +1243,7 @@ public class Pro1Controller implements Initializable {
         });
 
         Label label47 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
-                "山东", map.get("山东")[0], map.get("山东")[1], map.get("山东")[2], map.get("山东")[3]));
+                "山东", map.get("山东").getNewlyCase(), map.get("山东").getTotalCase(), map.get("山东").getTotalCured(), map.get("山东").getTotalDeath()));
 
         label47.setFont(new Font(18));
         sd.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1280,35 +1305,47 @@ public class Pro1Controller implements Initializable {
         dataUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (isOne) {
-                    try {
-                        houduan.One.getFileAboradOnLine.upDate();
-                        houduan.Two.WebGetChinaFile.update();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    ArrayList<OneData> dataArrayList11 = new ArrayList<>();
-                    casesReportedDaily casesReportedDaily11 = new casesReportedDaily();
-                    for (ArrayList<OneData> arrayList : casesReportedDaily11.Run().values()) {
-                        dataArrayList11.add(arrayList.get(arrayList.size() - 1));
-                    }
+//                AnchorPane an4=new AnchorPane();
+//                Label tips=new Label("Please wait");
+//                Label tips2=new Label("OK!");
 
-                    OneData.setData(dataArrayList11);
-                    ObservableList<OneData> observableList11 = FXCollections.observableArrayList();
-                    observableList11.addAll(OneData.getData());
-                    observableList = observableList11;
-                } else {
-                    ArrayList<OneData> dataArrayList22 = new ArrayList<>();
-                    casesReportedDaily casesReportedDaily22 = new casesReportedDaily();
-                    for (ArrayList<OneData> arrayList : casesReportedDaily22.Run().values()) {
-                        dataArrayList22.add(arrayList.get(arrayList.size() - 1));
-                    }
-                    OneData.setData(dataArrayList22);
-                    ObservableList<OneData> observableList22 = FXCollections.observableArrayList();
-                    observableList22.addAll(OneData.getData());
-                    observableList = observableList22;
+                try {
+
+
+
+
+
+                    houduan.One.getFileAboradOnLine.upDate();
+                    houduan.Two.WebGetChinaFile.update2();
+
+                    Label tips=new Label("Please wait");
+                    tips.setFont(new Font(15));
+
+                    chartPlace.getChildren().add(tips);
+                    chartPlace.getChildren().remove(tips);
+                    Label tips2=new Label("OK!");
+                    chartPlace.getChildren().add(tips2);
+//                    Thread.sleep(2000);
+                    chartPlace.getChildren().remove(tips2);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                ArrayList<OneData> dataArrayList11 = new ArrayList<>();
+                casesReportedDaily casesReportedDaily11 = new casesReportedDaily();
+                for (ArrayList<OneData> arrayList : casesReportedDaily11.Run().values()) {
+                    dataArrayList11.add(arrayList.get(arrayList.size() - 1));
+                }
+
+                OneData.setData(dataArrayList11);
+                ObservableList<OneData> observableList11 = FXCollections.observableArrayList();
+                observableList11.addAll(dataArrayList11);
+                observableList = observableList11;
+
                 listView.setItems(observableList);
+                Label label = new Label(String.format("%-39s%-32s%-32s%-32s%-32s%s","CountryName","TotalCases","NewlyCases","TotalDeath","NewlyDeath", "NewlyDate:") + dayNow);
+                labelPlace.getChildren().add(label);
+
             }
         });
 
@@ -1529,7 +1566,7 @@ public class Pro1Controller implements Initializable {
             public void changed(ObservableValue<? extends OneData> observable, OneData oldValue, OneData newValue) {
                 temp.clear();
                 temp.addAll(listView.getSelectionModel().getSelectedItems());
-                temp.forEach(data -> System.out.println(data.getCountry()));
+//                temp.forEach(data -> System.out.println(data.getCountry()));
 //                System.out.println(newValue.getCountryName());
 //                temp.add(newValue);
             }
@@ -1648,8 +1685,9 @@ public class Pro1Controller implements Initializable {
                     XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
                     series.setName(OneData.getName(parameters.get(i)));
                     for (int j = 0; j < temp.size(); j++) {
-                        series.getData().add(new XYChart.Data<String, Number>(temp.get(j).getCountry(), temp.get(j).getParameter(parameters.get(i))));
-
+                        series.getData().add(new XYChart.Data<String, Number>(
+                                temp.get(j).getCountry()
+                                , temp.get(j).getParameter(parameters.get(i))));
                     }
                     obl.add(series);
                 }
@@ -1669,8 +1707,7 @@ public class Pro1Controller implements Initializable {
                 }
 
                 if (isFirstBar) {
-
-                    //每一个国家的daycase大小相同
+//                    每一个国家的daycase大小相同
                     for (int i = 0; i < b.size(); i++) {
                         MenuItem day = new MenuItem(b.get(i));
                         String dayName = b.get(i);
@@ -1688,7 +1725,6 @@ public class Pro1Controller implements Initializable {
                                 for (int j = 0; j < temp.size(); j++) {
                                     series.getData().add(new XYChart.Data<String, Number>(temp.get(j).getCountry(), temp.get(j).getDay_death().get(finalI)));
                                 }
-
                                 obl1.add(series);
 
 
@@ -1822,27 +1858,98 @@ public class Pro1Controller implements Initializable {
 
                 if (isFirstLine) {
                     //每一个国家的daycase大小相同
-                    for (int i = 0; i < bString.size(); i++) {
-                        MenuItem day1 = new MenuItem(bString.get(i));
-                        MenuItem day2 = new MenuItem(bString.get(i));
+//                    String lastDay = bString.get(bString.size() - 1);
+                    dayNow = casesReportedDaily1.RunDate().get("China").get(casesReportedDaily1.RunDate().get("China").size() - 1);
+                    String lastDay = dayNow;
+                    String firstDay = "2020-01-03";
+                    String[] lastDayYMD = lastDay.split("-");
+                    String[] firstDayYMD = firstDay.split("-");
+                    int xMonths = (Integer.parseInt(lastDayYMD[0]) - Integer.parseInt(firstDayYMD[0])) * 12
+                            + Integer.parseInt(lastDayYMD[1]) - Integer.parseInt(firstDayYMD[1]) + 1;
+                    String[] monthsString = new String[xMonths];
+                    int count = 0;
+
+                    int[] monthDayStart = new int[xMonths];
+                    int[] monthDayEnd = new int[xMonths];
+
+                    monthDayStart[0] = 3;
+                    for (int i = 1; i < xMonths; i++) {
+                        monthDayStart[i]++;
+                    }
+
+                    boolean c = true;
+                    for (int i = 0; i < xMonths - 1; i++) {
+                        int month = i % 12 + 1;
+                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                            monthDayEnd[i] = 31;
+                        } else if (month == 2) {
+                            if (c) {
+                                monthDayEnd[i] = 29;
+                                c = false;
+                            } else {
+                                monthDayEnd[i] = 28;
+                            }
+
+                        } else {
+                            monthDayEnd[i] = 30;
+                        }
+                    }
+                    monthDayEnd[xMonths - 1] = Integer.parseInt(dayNow.split("-")[2]);
+
+
+                    for (int i = 0; i < xMonths; i++) {
+                        int year = Integer.parseInt(firstDayYMD[0]) + (count) / 12;
+                        int month = (Integer.parseInt(firstDayYMD[1]) + (count++) - 1) % 12 + 1;
+                        if (1 <= month && month <= 9)
+                            monthsString[i] = String.valueOf(year) + "-0" + String.valueOf(month);
+                        else monthsString[i] = String.valueOf(year) + "-" + String.valueOf(month);
+
+                    }
+
+
+                    for (int i = 0; i < xMonths; i++) {
+                        Menu day1 = new Menu(monthsString[i]);
+                        Menu day2 = new Menu(monthsString[i]);
                         String dayName = bString.get(i);
                         start.getItems().add(day1);
                         end.getItems().add(day2);
 
-                        day1.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                start.setText(((MenuItem) event.getSource()).getText());
-                            }
-                        });
+                        int x1 = monthDayStart[i];
+                        int x2 = monthDayEnd[i];
+                        String temp = monthsString[i] + "-";
 
 
-                        day2.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                end.setText(((MenuItem) event.getSource()).getText());
-                            }
-                        });
+                        for (int j = x1; j <= x2; j++) {
+                            MenuItem d1 = null;
+                            if (1 <= j && j <= 9) d1 = new MenuItem(temp + "0" + String.valueOf(j));
+                            else d1 = new MenuItem(temp + String.valueOf(j));
+                            day1.getItems().add(d1);
+                            d1.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    start.setText(((MenuItem) event.getSource()).getText());
+                                }
+                            });
+                        }
+                        start.setText(((MenuItem) event.getSource()).getText());
+
+
+//                        end.getItems().clear();
+                        end.setText(((MenuItem) event.getSource()).getText());
+                        for (int j = x1; j <= x2; j++) {
+                            MenuItem d2 = null;
+                            if (1 <= j && j <= 9) d2 = new MenuItem(temp + "0" + String.valueOf(j));
+                            else d2 = new MenuItem(temp + String.valueOf(j));
+                            day2.getItems().add(d2);
+                            d2.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    end.setText(((MenuItem) event.getSource()).getText());
+                                }
+                            });
+                        }
+
+
                     }
                 }
                 isLine = true;
@@ -2231,10 +2338,6 @@ public class Pro1Controller implements Initializable {
         });
         return lineChart;
     }
-
-
-
-
 
     /*
     随机改变temp的方法

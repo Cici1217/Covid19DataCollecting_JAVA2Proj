@@ -7,12 +7,12 @@ public class TwoData {
     int totalDeath;
     int totalCured;
 
-    public TwoData(String cityName, int newlyCase, int totalCase, int totalDeath, int totalCured) {
+    public TwoData(String cityName, int newlyCase,int totalCase,int totalDeath,int totalCured) {
         this.cityName = cityName;
         this.newlyCase = newlyCase;
         this.totalCase = totalCase;
-        this.totalDeath = totalDeath;
         this.totalCured = totalCured;
+        this.totalDeath = totalDeath;
     }
 
     public String getCityName() {

@@ -1,20 +1,17 @@
 package houduan.Two;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 public class getChinaDataFromFile {
     public static void main(String[] args) {
-getDataInChina();
+        getDataInChina();
 
         //you can process hashmap here
     }
 
-    public static HashMap<String,int[]> getDataInChina(){
-        HashMap<String, int[]> hashMap = new HashMap<>();
+    public static HashMap<String, TwoData> getDataInChina() {
+        HashMap<String, TwoData> hashMap = new HashMap<>();
         BufferedReader reader;
         File file = new File("test.txt");
 
@@ -23,12 +20,13 @@ getDataInChina();
             String temp;
             while ((temp = reader.readLine()) != null) {
                 String[] body = temp.split(" ", -1);
-                hashMap.put(body[0], new int[]{
+                TwoData twoData = new TwoData(body[0],
                         Integer.parseInt(body[1]),
                         Integer.parseInt(body[2]),
                         Integer.parseInt(body[3]),
                         Integer.parseInt(body[4])
-                });
+                );
+                hashMap.put(body[0], twoData);
             }
             reader.close();
         } catch (IOException e) {
