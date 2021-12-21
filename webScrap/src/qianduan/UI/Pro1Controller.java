@@ -77,7 +77,7 @@ public class Pro1Controller implements Initializable {
 
 
     @FXML
-    Button  bu, dataUpdate,close,save;
+    Button bu, dataUpdate, close, save;
 
     @FXML
     MenuButton chartChoice;
@@ -129,13 +129,14 @@ public class Pro1Controller implements Initializable {
 
     static ObservableList<Node> paneNode;
 
-    Button back=new Button("倒带");
-    Button updateButton=new Button("更新");
-    Button stop=new Button("暂停");
-    Button speed=new Button("快进");
-
-
-
+    @FXML
+    Button back = new Button("倒带");
+    @FXML
+    Button updateButton = new Button("更新");
+    @FXML
+    Button stop = new Button("暂停");
+    @FXML
+    Button speed = new Button("快进");
 
 
     @Override
@@ -192,8 +193,11 @@ public class Pro1Controller implements Initializable {
         /*
         添加label
          */
-        Label label = new Label("   CountryName    TotalCases     NewlyCases     TotalDeath     NewlyDeath");
+        String s = casesReportedDaily1.RunDate().get("China").get(casesReportedDaily1.RunDate().get("China").size() - 1);
+        Label label = new Label("   CountryName    TotalCases     NewlyCases     TotalDeath     NewlyDeath    NewlyDate: " + s);
         labelPlace.getChildren().add(label);
+
+//        Label label2 = new Label();
 
 
         /*
@@ -392,8 +396,6 @@ public class Pro1Controller implements Initializable {
         });
 
 
-
-
         cq.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -403,9 +405,6 @@ public class Pro1Controller implements Initializable {
                 cq.setCacheHint(CacheHint.SPEED);
             }
         });
-
-
-
 
 
         Label label16 = new Label(String.format("城市：%s\n当前病例：%d\n总病例：%d\n总治愈病例：%d\n总死亡病例：%d\n",
@@ -1284,6 +1283,7 @@ public class Pro1Controller implements Initializable {
                 if (isOne) {
                     try {
                         houduan.One.getFileAboradOnLine.upDate();
+                        houduan.Two.WebGetChinaFile.update();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1722,7 +1722,7 @@ public class Pro1Controller implements Initializable {
                                     // 生成快照，保存到文件
                                     WritableImage image = chartPlace.snapshot(params, null);
 
-                                    File file = new File(System.getProperty("user.dir") + File.separator +"pictures"+File.separator+ "BarChart"+bCount+".png");
+                                    File file = new File(System.getProperty("user.dir") + File.separator + "pictures" + File.separator + "BarChart" + bCount + ".png");
                                     try {
                                         ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
                                     } catch (IOException e) {
@@ -1766,7 +1766,6 @@ public class Pro1Controller implements Initializable {
         });
 
 
-
         lineChart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -1779,16 +1778,13 @@ public class Pro1Controller implements Initializable {
                 chartPlace.getChildren().removeAll();
                 buttonPlace.getChildren().remove(dayChoice);
 
-                
-                buttonPlace.getChildren().add(updateButton);
-                buttonPlace.getChildren().add(stop);
-                buttonPlace.getChildren().add(speed);
-                buttonPlace.getChildren().add(back);
-
 
                 if (!isLine) {
                     buttonPlace.getChildren().add(label1);
-
+                    buttonPlace.getChildren().add(updateButton);
+                    buttonPlace.getChildren().add(stop);
+                    buttonPlace.getChildren().add(speed);
+                    buttonPlace.getChildren().add(back);
                 }
                 chartPlace.getChildren().add(start);
                 chartPlace.getChildren().add(end);
@@ -1837,8 +1833,6 @@ public class Pro1Controller implements Initializable {
                             @Override
                             public void handle(ActionEvent event) {
                                 start.setText(((MenuItem) event.getSource()).getText());
-//                            System.out.println(((MenuItem)event.getSource()).getText());
-//                            ((MenuItem)event.getSource()).getText()
                             }
                         });
 
@@ -1847,7 +1841,6 @@ public class Pro1Controller implements Initializable {
                             @Override
                             public void handle(ActionEvent event) {
                                 end.setText(((MenuItem) event.getSource()).getText());
-//                            System.out.println(((MenuItem)event.getSource()).getText());
                             }
                         });
                     }
@@ -1862,7 +1855,8 @@ public class Pro1Controller implements Initializable {
 
     }
 
-    static int pCount=0;
+    static int pCount = 0;
+
     public PieChart setPieChart(ObservableList<PieChart.Data> dataObservableList) {
         PieChart pieChart = new PieChart();
         pieChart.setData(dataObservableList);
@@ -1914,7 +1908,7 @@ public class Pro1Controller implements Initializable {
             // 生成快照，保存到文件
             WritableImage image = chartPlace.snapshot(params, null);
 //            String s=now+"PieChart";
-            File file = new File(System.getProperty("user.dir") + File.separator +"pictures"+File.separator+  "PieChart"+pCount+".png");
+            File file = new File(System.getProperty("user.dir") + File.separator + "pictures" + File.separator + "PieChart" + pCount + ".png");
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
             } catch (IOException e) {
@@ -1929,7 +1923,8 @@ public class Pro1Controller implements Initializable {
 
     }
 
-    static int bCount=0;
+    static int bCount = 0;
+
     public BarChart<String, Number> setBarChart(ObservableList<XYChart.Series<String, Number>> obl) {
         CategoryAxis x = new CategoryAxis();
         x.setLabel("CountryName");
@@ -2020,7 +2015,7 @@ public class Pro1Controller implements Initializable {
 
             // 生成快照，保存到文件
             WritableImage image = chartPlace.snapshot(params, null);
-            File file = new File(System.getProperty("user.dir") + File.separator +"pictures"+File.separator+ "BarChart"+bCount+ ".png");
+            File file = new File(System.getProperty("user.dir") + File.separator + "pictures" + File.separator + "BarChart" + bCount + ".png");
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
             } catch (IOException e) {
@@ -2033,7 +2028,8 @@ public class Pro1Controller implements Initializable {
         return barChart;
     }
 
-    static int lCount=0;
+    static int lCount = 0;
+
     public LineChart<Number, Number> setLineChart(ObservableList<XYChart.Series<Number, Number>> obl) {
 
         NumberAxis y = new NumberAxis(0, 500, 10);
@@ -2224,7 +2220,7 @@ public class Pro1Controller implements Initializable {
             // 生成快照，保存到文件
             WritableImage image = chartPlace.snapshot(params, null);
 
-            File file = new File(System.getProperty("user.dir") + File.separator+ "pictures"+File.separator+ "LineChart"+lCount+ ".png");
+            File file = new File(System.getProperty("user.dir") + File.separator + "pictures" + File.separator + "LineChart" + lCount + ".png");
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
             } catch (IOException e) {
